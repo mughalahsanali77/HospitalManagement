@@ -1,0 +1,926 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Frames;
+
+import DatabaseManager.databaseManager;
+import DecodeAndEncode.Decoder;
+import beanClasses.patientBean;
+import beanClasses.patientHistoryBean;
+import beanClasses.staffBean;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Ammar
+ */
+public class PatientHistory extends javax.swing.JFrame {
+
+    /**
+     * Creates new form PatientHistory
+     */
+    public PatientHistory() {
+        initComponents();
+        getPatient();
+        getStaff();
+        pHIDTF.setEditable(false);
+          
+    }
+     public void getPatient(){
+
+        try{
+            Vector v=databaseManager.getPatient();
+            
+            for(int i=0; i<v.size(); i++){
+             
+                patientBean bean=(patientBean)v.elementAt(i);
+                patientCB.addItem(bean);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this," Error: "+e.getMessage());
+            e.printStackTrace();
+        }
+    }//
+     
+    public void getStaff(){
+
+        try{
+            Vector v=databaseManager.getStaff();
+            
+            for(int i=0; i<v.size(); i++){
+             
+                staffBean bean=(staffBean)v.elementAt(i);
+                staffCB.addItem(bean);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this," Error: "+e.getMessage());
+            e.printStackTrace();
+        }
+    }
+//    private void getPatientHistory(){
+//            patientBean bean = (patientBean)patientCB.getSelectedItem();
+//           // staffBean bean1 = (staffBean)staffCB.getSelectedItem();
+//           if(bean==null)return;
+//           try{
+//               Vector v = databaseManager.getPatientHistory(bean.getPatientId());
+//               nCDL.setListData(v);
+//           }catch(Exception e){
+//              e.printStackTrace();
+//              JOptionPane.showMessageDialog(this,"Error"+e.getMessage());
+//           }
+//           
+//       }
+//    private void getPatientHistory1(){
+//            //patientBean bean = (patientBean)patientCB.getSelectedItem();
+//            staffBean bean = (staffBean)staffCB.getSelectedItem();
+//           if(bean==null)return;
+//           try{
+//               Vector v = databaseManager.getPatientHistory1(bean.getStaffId());
+//               nCDL.setListData(v);
+//           }catch(Exception e){
+//              e.printStackTrace();
+//              JOptionPane.showMessageDialog(this,"Error"+e.getMessage());
+//           }
+//           
+//       }
+     private void clear(){
+        pHIDTF.setText("");
+        sTF.setText("");
+        dTF.setText("");
+        mTF.setText("");
+        wRTF.setText("");
+        tWTF.setText("");
+        nCDTF.setText("");
+        dVTF.setText("");
+        remarksTF.setText("");
+        
+    }// end clear
+ private void addRecord(){
+         patientBean bean=(patientBean)patientCB.getSelectedItem();
+         staffBean bean1=(staffBean)staffCB.getSelectedItem();
+       if(bean==null||bean1==null)return;  
+            String  symptoms          = sTF.getText();
+            String  dignosis          = dTF.getText();
+            String  medicine          = mTF.getText();
+            String  wardRequired      = wRTF.getText();
+            String  typeOfWard        = tWTF.getText();
+            String  nextCheckUpDate   = nCDTF.getText();
+            String  dateOfVisit       = dVTF.getText();
+            String  remarks           = remarksTF.getText();
+            try{
+                int rows=databaseManager.addPatientHistory(bean.getPatientId(),bean1.getStaffId(),symptoms,dignosis,medicine,wardRequired,typeOfWard,nextCheckUpDate,dateOfVisit,remarks);
+                if(rows>=1)
+                    JOptionPane.showMessageDialog(this, rows+"RECORD INSERTED ");
+                clear();
+                //getPatientHistory();
+            }catch(Exception e){
+                   JOptionPane.showMessageDialog(this,"Error"+e.getMessage());
+                   e.printStackTrace();
+            }
+    }//end addRecord
+    private void updateRecord(){
+         patientHistoryBean bean=(patientHistoryBean)nCDL.getSelectedValue();
+         patientBean bean1=(patientBean)patientCB.getSelectedItem();
+         staffBean bean2=(staffBean)staffCB.getSelectedItem();
+         if(bean==null)return ;
+            String  symptoms          = sTF.getText();
+            String  dignosis          = dTF.getText();
+            String  medicine          = mTF.getText();
+            String  wardRequired      = wRTF.getText();
+            String  typeOfWard        = tWTF.getText();
+            String  nextCheckUpDate   = nCDTF.getText();
+            String  dateOfVisit       = dVTF.getText();
+            String  remarks           = remarksTF.getText();
+         try{
+          int rows=databaseManager.updatePatientHistory(bean.getPatientHistoryId(),bean1.getPatientId(),bean2.getStaffId(),symptoms,dignosis,medicine,wardRequired,typeOfWard,nextCheckUpDate,dateOfVisit,remarks);
+            
+                if(rows>=1)
+                    JOptionPane.showMessageDialog(this, rows+"RECORD UPDATED ");
+                clear();
+                //getPatientHistory();
+            }catch(Exception e){
+                   JOptionPane.showMessageDialog(this,"Error"+e.getMessage());
+                   e.printStackTrace();
+            }
+         }
+     private void deleteRecord(){
+    patientHistoryBean bean = (patientHistoryBean)nCDL.getSelectedValue();
+    if(bean==null)return;
+    try{
+        int rows = databaseManager.deletePatientHistory(bean.getPatientHistoryId());
+          if(rows>=1)
+                    JOptionPane.showMessageDialog(this, rows+" RECORD DELETED ");
+                //getPatientHistory();
+            }catch(Exception e){
+                   JOptionPane.showMessageDialog(this,"Error"+e.getMessage());
+                   e.printStackTrace();
+            }
+         }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        patientCB = new javax.swing.JComboBox();
+        jLabel13 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        staffCB = new javax.swing.JComboBox();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        sNTF = new javax.swing.JTextField();
+        sDTF = new javax.swing.JTextField();
+        aTF = new javax.swing.JTextField();
+        sex1TF = new javax.swing.JTextField();
+        a1TF = new javax.swing.JTextField();
+        bG1TF = new javax.swing.JTextField();
+        s1TF = new javax.swing.JTextField();
+        dHTF = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        sLA = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        pHIDTF = new javax.swing.JTextField();
+        sTF = new javax.swing.JTextField();
+        dTF = new javax.swing.JTextField();
+        mTF = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        wRTF = new javax.swing.JTextField();
+        tWTF = new javax.swing.JTextField();
+        nCDTF = new javax.swing.JTextField();
+        dVTF = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        nCDL = new javax.swing.JList();
+        jLabel33 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        remarksTF = new javax.swing.JTextField();
+        addButton1 = new javax.swing.JButton();
+        updateButton1 = new javax.swing.JButton();
+        deleteButton1 = new javax.swing.JButton();
+        clearButton1 = new javax.swing.JButton();
+        backButton1 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        pITF = new javax.swing.JTextField();
+        pNTF = new javax.swing.JTextField();
+        sexTF = new javax.swing.JTextField();
+        cnicTF = new javax.swing.JTextField();
+        contactTF = new javax.swing.JTextField();
+        addressTF = new javax.swing.JTextField();
+        bGTF = new javax.swing.JTextField();
+        dORTF = new javax.swing.JTextField();
+        aDTF = new javax.swing.JTextField();
+        rRTF = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        ageTF = new javax.swing.JTextField();
+        sITF = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1600, 1600));
+        getContentPane().setLayout(null);
+
+        patientCB.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        patientCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                patientCBActionPerformed(evt);
+            }
+        });
+        getContentPane().add(patientCB);
+        patientCB.setBounds(160, 90, 230, 40);
+
+        jLabel13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel13.setText("           PATIENT ");
+        getContentPane().add(jLabel13);
+        jLabel13.setBounds(40, 90, 120, 40);
+
+        jPanel1.setBackground(new java.awt.Color(0, 204, 255));
+
+        jLabel3.setFont(new java.awt.Font("Engravers MT", 1, 24)); // NOI18N
+        jLabel3.setText("PATIENT ");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 39, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(160, 10, 230, 50);
+
+        staffCB.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        staffCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                staffCBActionPerformed(evt);
+            }
+        });
+        getContentPane().add(staffCB);
+        staffCB.setBounds(550, 90, 230, 40);
+
+        jLabel15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel15.setText("STAFF");
+        getContentPane().add(jLabel15);
+        jLabel15.setBounds(500, 90, 60, 40);
+
+        jLabel16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel16.setText("  STAFF DESIGNATION");
+        getContentPane().add(jLabel16);
+        jLabel16.setBounds(390, 230, 170, 40);
+
+        jLabel17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel17.setText(" AGE");
+        getContentPane().add(jLabel17);
+        jLabel17.setBounds(510, 280, 50, 40);
+
+        jLabel18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel18.setText(" SEX");
+        getContentPane().add(jLabel18);
+        jLabel18.setBounds(510, 330, 50, 40);
+
+        jLabel19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel19.setText("  ADDRESS");
+        getContentPane().add(jLabel19);
+        jLabel19.setBounds(470, 380, 90, 40);
+
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel20.setText("  BLOOD GROUP");
+        getContentPane().add(jLabel20);
+        jLabel20.setBounds(430, 430, 130, 40);
+
+        jLabel21.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel21.setText("SHIFT");
+        getContentPane().add(jLabel21);
+        jLabel21.setBounds(500, 480, 60, 40);
+
+        jLabel22.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel22.setText("         DATE OF  HIRE");
+        getContentPane().add(jLabel22);
+        jLabel22.setBounds(400, 530, 160, 40);
+
+        sNTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(sNTF);
+        sNTF.setBounds(550, 180, 230, 40);
+
+        sDTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(sDTF);
+        sDTF.setBounds(550, 230, 230, 40);
+
+        aTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(aTF);
+        aTF.setBounds(550, 280, 230, 40);
+
+        sex1TF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(sex1TF);
+        sex1TF.setBounds(550, 330, 230, 40);
+
+        a1TF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(a1TF);
+        a1TF.setBounds(550, 380, 230, 40);
+
+        bG1TF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(bG1TF);
+        bG1TF.setBounds(550, 430, 230, 40);
+
+        s1TF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(s1TF);
+        s1TF.setBounds(550, 480, 230, 40);
+
+        dHTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(dHTF);
+        dHTF.setBounds(550, 530, 230, 40);
+
+        jLabel23.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel23.setText("   STAFF NAME");
+        getContentPane().add(jLabel23);
+        jLabel23.setBounds(440, 180, 120, 40);
+
+        jPanel2.setBackground(new java.awt.Color(0, 204, 255));
+
+        jLabel24.setFont(new java.awt.Font("Engravers MT", 1, 24)); // NOI18N
+        jLabel24.setText("STAFF");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(60, Short.MAX_VALUE)
+                .addComponent(jLabel24)
+                .addGap(64, 64, 64))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(550, 10, 230, 50);
+
+        sLA.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        sLA.setText("  SYMPTOMS");
+        getContentPane().add(sLA);
+        sLA.setBounds(840, 140, 100, 40);
+
+        jLabel26.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel26.setText("DIAGNOSIS");
+        getContentPane().add(jLabel26);
+        jLabel26.setBounds(850, 190, 90, 40);
+
+        jLabel27.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel27.setText("MEDICINE");
+        getContentPane().add(jLabel27);
+        jLabel27.setBounds(1190, 90, 110, 30);
+
+        pHIDTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(pHIDTF);
+        pHIDTF.setBounds(940, 90, 100, 40);
+
+        sTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(sTF);
+        sTF.setBounds(940, 140, 240, 40);
+
+        dTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(dTF);
+        dTF.setBounds(940, 190, 240, 40);
+
+        mTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(mTF);
+        mTF.setBounds(940, 240, 240, 40);
+
+        jLabel28.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel28.setText("  PATIENT HISTORY ID");
+        getContentPane().add(jLabel28);
+        jLabel28.setBounds(780, 90, 150, 40);
+
+        jLabel29.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel29.setText("WARD REQUIRED");
+        getContentPane().add(jLabel29);
+        jLabel29.setBounds(810, 290, 160, 40);
+
+        jLabel30.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel30.setText("TYPE OF WARD");
+        getContentPane().add(jLabel30);
+        jLabel30.setBounds(820, 340, 150, 40);
+
+        jLabel31.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel31.setText(" NEXT CHECKUP DATE");
+        getContentPane().add(jLabel31);
+        jLabel31.setBounds(780, 390, 160, 40);
+
+        jLabel32.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel32.setText("         DATE OF  VISIT");
+        getContentPane().add(jLabel32);
+        jLabel32.setBounds(790, 440, 150, 40);
+
+        wRTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(wRTF);
+        wRTF.setBounds(940, 290, 240, 40);
+
+        tWTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(tWTF);
+        tWTF.setBounds(940, 340, 240, 40);
+
+        nCDTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(nCDTF);
+        nCDTF.setBounds(940, 390, 100, 40);
+
+        dVTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(dVTF);
+        dVTF.setBounds(940, 440, 100, 40);
+
+        nCDL.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        nCDL.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                nCDLValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(nCDL);
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(1190, 120, 160, 360);
+
+        jLabel33.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel33.setText("MEDICINE");
+        getContentPane().add(jLabel33);
+        jLabel33.setBounds(860, 240, 110, 40);
+
+        jPanel3.setBackground(new java.awt.Color(0, 204, 255));
+
+        jLabel34.setFont(new java.awt.Font("Engravers MT", 1, 24)); // NOI18N
+        jLabel34.setText("PATIENT HISTORY");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(63, Short.MAX_VALUE)
+                .addComponent(jLabel34)
+                .addGap(36, 36, 36))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel3);
+        jPanel3.setBounds(940, 10, 410, 50);
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel2.setText("REMARKS");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(850, 500, 70, 17);
+
+        remarksTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(remarksTF);
+        remarksTF.setBounds(940, 490, 410, 80);
+
+        addButton1.setBackground(new java.awt.Color(255, 51, 255));
+        addButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        addButton1.setForeground(new java.awt.Color(255, 255, 255));
+        addButton1.setText("ADD");
+        addButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(addButton1);
+        addButton1.setBounds(940, 580, 61, 40);
+
+        updateButton1.setBackground(new java.awt.Color(255, 51, 255));
+        updateButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        updateButton1.setForeground(new java.awt.Color(255, 255, 255));
+        updateButton1.setText("UPDATE");
+        updateButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(updateButton1);
+        updateButton1.setBounds(1010, 580, 87, 40);
+
+        deleteButton1.setBackground(new java.awt.Color(255, 51, 255));
+        deleteButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        deleteButton1.setForeground(new java.awt.Color(255, 255, 255));
+        deleteButton1.setText("DELETE");
+        deleteButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(deleteButton1);
+        deleteButton1.setBounds(1100, 580, 85, 40);
+
+        clearButton1.setBackground(new java.awt.Color(255, 51, 255));
+        clearButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        clearButton1.setForeground(new java.awt.Color(255, 255, 255));
+        clearButton1.setText("CLEAR");
+        clearButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(clearButton1);
+        clearButton1.setBounds(1190, 580, 79, 40);
+
+        backButton1.setBackground(new java.awt.Color(255, 0, 0));
+        backButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        backButton1.setForeground(new java.awt.Color(255, 255, 255));
+        backButton1.setText("BACK");
+        backButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(backButton1);
+        backButton1.setBounds(1280, 580, 70, 40);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Patient+staff", "Patient", "Staff" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jComboBox1);
+        jComboBox1.setBounds(1190, 60, 160, 30);
+
+        jLabel25.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel25.setText("       PATIENT ID");
+        getContentPane().add(jLabel25);
+        jLabel25.setBounds(40, 140, 120, 30);
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel5.setText("SEX");
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(110, 260, 50, 30);
+
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel6.setText("CNIC");
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(110, 300, 50, 30);
+
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel7.setText("CONTACT");
+        getContentPane().add(jLabel7);
+        jLabel7.setBounds(80, 340, 80, 30);
+
+        jLabel8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel8.setText("ADDRESS");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(80, 380, 80, 30);
+
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel9.setText("   BLOOD GROUP");
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(30, 420, 130, 30);
+
+        jLabel10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel10.setText("DATE OF RELEASE");
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(20, 460, 140, 30);
+
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel11.setText("         ADMIT DATE");
+        getContentPane().add(jLabel11);
+        jLabel11.setBounds(30, 500, 130, 30);
+
+        jLabel12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel12.setText("RELEASE REASON");
+        getContentPane().add(jLabel12);
+        jLabel12.setBounds(20, 540, 140, 30);
+
+        pITF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(pITF);
+        pITF.setBounds(160, 140, 230, 30);
+
+        pNTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(pNTF);
+        pNTF.setBounds(160, 180, 230, 30);
+
+        sexTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(sexTF);
+        sexTF.setBounds(160, 260, 230, 30);
+
+        cnicTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(cnicTF);
+        cnicTF.setBounds(160, 300, 230, 30);
+
+        contactTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(contactTF);
+        contactTF.setBounds(160, 340, 230, 30);
+
+        addressTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(addressTF);
+        addressTF.setBounds(160, 380, 230, 30);
+
+        bGTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(bGTF);
+        bGTF.setBounds(160, 420, 230, 30);
+
+        dORTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(dORTF);
+        dORTF.setBounds(160, 460, 230, 30);
+
+        aDTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(aDTF);
+        aDTF.setBounds(160, 500, 230, 30);
+
+        rRTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(rRTF);
+        rRTF.setBounds(160, 540, 230, 30);
+
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel14.setText("PATIENT NAME");
+        getContentPane().add(jLabel14);
+        jLabel14.setBounds(40, 180, 120, 30);
+
+        jLabel35.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel35.setText("PATIENT NAME");
+        getContentPane().add(jLabel35);
+        jLabel35.setBounds(40, 180, 120, 30);
+
+        jLabel36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel36.setText("AGE");
+        getContentPane().add(jLabel36);
+        jLabel36.setBounds(110, 220, 50, 30);
+
+        ageTF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(ageTF);
+        ageTF.setBounds(160, 220, 230, 30);
+
+        sITF.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getContentPane().add(sITF);
+        sITF.setBounds(550, 140, 120, 30);
+
+        jLabel37.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel37.setText("          STAFF ID");
+        getContentPane().add(jLabel37);
+        jLabel37.setBounds(430, 140, 110, 30);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void addButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButton1ActionPerformed
+        // TODO add your handling code here:
+        addRecord();
+    }//GEN-LAST:event_addButton1ActionPerformed
+
+    private void updateButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButton1ActionPerformed
+        updateRecord();
+    }//GEN-LAST:event_updateButton1ActionPerformed
+
+    private void deleteButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButton1ActionPerformed
+        deleteRecord();
+    }//GEN-LAST:event_deleteButton1ActionPerformed
+
+    private void clearButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButton1ActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_clearButton1ActionPerformed
+
+    private void backButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton1ActionPerformed
+        // TODO add your handling code here:
+        hide();
+    }//GEN-LAST:event_backButton1ActionPerformed
+
+    private void nCDLValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_nCDLValueChanged
+        // TODO add your handling code here:
+        patientHistoryBean bean=(patientHistoryBean)nCDL.getSelectedValue();
+        patientBean bean1=(patientBean)patientCB.getSelectedItem();
+        staffBean bean2=(staffBean)staffCB.getSelectedItem();
+       if(bean==null)return;
+       
+       patientCB.getSelectedItem();
+       pHIDTF.setText(""+bean.getPatientHistoryId());
+       sTF.setText(bean.getSymptoms());
+       dTF.setText(""+bean.getDiagnosis());
+       mTF.setText(""+bean.getMedicine());
+       wRTF.setText(bean.getWardRequired());
+       tWTF.setText(""+bean.getTypeOfWard());
+       nCDTF.setText(""+bean.getNextCheckUpDate());
+       dVTF.setText(""+bean.getDateOfVisit());
+       remarksTF.setText(bean.getRemarks());
+    }//GEN-LAST:event_nCDLValueChanged
+
+    private void patientCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientCBActionPerformed
+        // TODO add your handling code here:
+      patientBean bean=(patientBean)patientCB.getSelectedItem();
+        
+        if(bean==null)return;
+        try{
+       pITF.setText(""+bean.getPatientId());
+       pNTF.setText(bean.getPatientName());
+       ageTF.setText(""+bean.getAge());
+       sexTF.setText(bean.getSex());
+       cnicTF.setText(""+bean.getCnic());
+       contactTF.setText(""+bean.getContact());
+       addressTF.setText(""+bean.getAddress());
+       bGTF.setText(bean.getBloodGroup());
+       dORTF.setText(""+bean.getDateOfRelease());
+       aDTF.setText(""+bean.getAdmitDate());
+       rRTF.setText(""+bean.getReleaseReason());
+       
+        Vector v=databaseManager.getPatientHistory(bean.getPatientId());
+        nCDL.setListData(v);
+       }catch(Exception e){e.printStackTrace();}
+    }//GEN-LAST:event_patientCBActionPerformed
+
+    private void staffCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffCBActionPerformed
+        staffBean bean=(staffBean)staffCB.getSelectedItem();
+        
+        if(bean==null)return;
+       
+        sITF.setText(""+bean.getStaffId());
+        sNTF.setText(bean.getStaffName());
+        sDTF.setText(""+bean.getStaffDesignation());
+        aTF.setText(""+bean.getAge());
+        sex1TF.setText(""+bean.getSex());
+        a1TF.setText(""+bean.getAddress());
+        bG1TF.setText(bean.getBloodGroup());
+        s1TF.setText(""+bean.getStaffId());
+       dHTF.setText(""+bean.getDateOfHire());
+      
+      
+       
+    }//GEN-LAST:event_staffCBActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+      patientHistoryBean bean =(patientHistoryBean)jComboBox1.getSelectedItem();
+        
+        if(bean ==null) return;
+        try {
+            Vector v=databaseManager.getPatientHistory(bean.getPatientId());
+            nCDL.setListData(v);
+        } catch (Exception ex) {
+           
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(PatientHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(PatientHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(PatientHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(PatientHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new PatientHistory().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField a1TF;
+    private javax.swing.JTextField aDTF;
+    private javax.swing.JTextField aTF;
+    private javax.swing.JButton addButton1;
+    private javax.swing.JTextField addressTF;
+    private javax.swing.JTextField ageTF;
+    private javax.swing.JTextField bG1TF;
+    private javax.swing.JTextField bGTF;
+    private javax.swing.JButton backButton1;
+    private javax.swing.JButton clearButton1;
+    private javax.swing.JTextField cnicTF;
+    private javax.swing.JTextField contactTF;
+    private javax.swing.JTextField dHTF;
+    private javax.swing.JTextField dORTF;
+    private javax.swing.JTextField dTF;
+    private javax.swing.JTextField dVTF;
+    private javax.swing.JButton deleteButton1;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField mTF;
+    private javax.swing.JList nCDL;
+    private javax.swing.JTextField nCDTF;
+    private javax.swing.JTextField pHIDTF;
+    private javax.swing.JTextField pITF;
+    private javax.swing.JTextField pNTF;
+    private javax.swing.JComboBox patientCB;
+    private javax.swing.JTextField rRTF;
+    private javax.swing.JTextField remarksTF;
+    private javax.swing.JTextField s1TF;
+    private javax.swing.JTextField sDTF;
+    private javax.swing.JTextField sITF;
+    private javax.swing.JLabel sLA;
+    private javax.swing.JTextField sNTF;
+    private javax.swing.JTextField sTF;
+    private javax.swing.JTextField sex1TF;
+    private javax.swing.JTextField sexTF;
+    private javax.swing.JComboBox staffCB;
+    private javax.swing.JTextField tWTF;
+    private javax.swing.JButton updateButton1;
+    private javax.swing.JTextField wRTF;
+    // End of variables declaration//GEN-END:variables
+}
